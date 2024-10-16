@@ -71,7 +71,6 @@ export const AcountProvider = ({ children }) => {
                 //showAlert('error', errorMessage);
             }
         }
-        
     }
 
     const eliminarCuenta = async ( id, usuario_sid ) => {
@@ -98,13 +97,60 @@ export const AcountProvider = ({ children }) => {
         }
     }
 
+    const obtenerPasssword = async ( id ) => {
+        try {
+            const token = localStorage.getItem('token')
+            if(!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const url = `/api/show-password/${id}`;
+            const { data } = await axiosInstance(url, config);
+
+            // Retornar el texto desencriptado obtenido del servidor
+            return data.textoDesencriptado; 
+        } catch (error) {
+            // El servidor respondió con un código de estado diferente a 2xx
+            console.log(error);
+        }
+    }
+
+    const buscarCuenta = async ( texto ) => {
+        try {
+            const token = localStorage.getItem('token')
+            if(!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await axiosInstance.post('/api/search-acount', { texto }, config);
+            console.log(data);
+            setCuentas(data);
+
+        } catch (error) {
+            console.log(error);
+            setCuentas([]);
+        }
+    }
+
     return (
         <AcountContext.Provider
             value={{
                 cuentas,
                 obtenerCuentas,
                 registrarCuenta,
-                eliminarCuenta
+                eliminarCuenta,
+                obtenerPasssword,
+                buscarCuenta
             }}
         >
             {children}

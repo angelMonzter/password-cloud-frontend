@@ -7,10 +7,9 @@ import useAcount from "../hooks/useAcount";
 import useAuth from "../hooks/useAuth";
 import {  showAlert } from "../components/Alerta"
 
-
 function AddAccountModal({ isOpen, closeModal, cuenta }) {
 
-    const { registrarCuenta } = useAcount();
+    const { registrarCuenta, obtenerPasssword } = useAcount();
     const { auth } = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -25,16 +24,22 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
         setShowPassword(!showPassword);
     };
 
+    const desencriptarPassword = async (id) => {
+      //mandar a backend a desencriptar contraseña 
+      const textoDesencriptado = await obtenerPasssword(id);
+  
+      setPassword(textoDesencriptado);
+    };
+
     useEffect(() => {
       if(cuenta?.nombre_cuenta) {
           setNombreCuenta(cuenta.nombre_cuenta)
           setUsuario(cuenta.usuario)
-          setPassword(cuenta.password)
           setDatosExtra(cuenta.datos_extra)
           setId(cuenta.datos_cuenta_id)
+          desencriptarPassword(cuenta.datos_cuenta_id);
       }
-     
-  }, [cuenta])
+    }, [cuenta])
 
     const handleSubmit = async (e) => {
       e.preventDefault();

@@ -8,11 +8,24 @@ import AddAccountModal from "./Modal"; // Importa el modal que creamos
 export const CardAcount = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);  // Estado del modal
   const [cuentaSeleccionada, setCuentaSeleccionada] = useState(null);  // Datos de la cuenta seleccionada
-  const { cuentas, eliminarCuenta } = useAcount();
+  const { cuentas, eliminarCuenta, obtenerPasssword } = useAcount();
 
   // Función para copiar texto al portapapeles
-  const copiarAlPortapapeles = (texto) => {
-    navigator.clipboard.writeText(texto).then(() => {
+  const copiarAlPortapapeles = async (data) => {
+    //mandar a backend a desencriptar contraseña 
+    const textoDesencriptado = await obtenerPasssword(data);
+
+    if (textoDesencriptado) {
+      // Aquí puedes usar el texto desencriptado como necesites
+      navigator.clipboard.writeText(textoDesencriptado).then(() => {
+        showAlert('success', 'Datos copiados');
+      }).catch((err) => {
+        console.error("Error al copiar el texto:", err);
+      });
+      return;
+    }
+
+    navigator.clipboard.writeText(data).then(() => {
       showAlert('success', 'Datos copiados');
     }).catch((err) => {
       console.error("Error al copiar el texto:", err);
@@ -28,7 +41,6 @@ export const CardAcount = () => {
 
   //Funcion para editar una cuenta
   const editarCuenta = (cuenta) => {
-    console.log(cuenta);
     setCuentaSeleccionada(cuenta)
     setIsModalOpen(true);
   };
@@ -88,7 +100,7 @@ export const CardAcount = () => {
                 </button>
                 <button 
                     className="p-1 text-blue-500 border rounded hover:bg-blue-100"
-                    onClick={() => copiarAlPortapapeles(cuenta.password)}
+                    onClick={() => copiarAlPortapapeles(cuenta.datos_cuenta_id)}
                 >
                   <i className="fas fa-copy"></i>
                 </button>

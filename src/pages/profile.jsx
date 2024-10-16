@@ -17,13 +17,22 @@ import {  showAlert } from "../components/Alerta"
 export function Profile() {
 
   const { cerrarSesion, auth } = useAuth();
-  const { cuentas, obtenerCuentas } = useAcount();
-  
+  const { cuentas, obtenerCuentas, buscarCuenta } = useAcount();
   const { nombre, correo, usuario_id } = auth.perfil;
 
   useEffect(() => {
     obtenerCuentas(usuario_id); 
   }, [])
+
+  const buscador = async (e) => {
+    e.preventDefault();
+    const valor = e.target.value.trim();
+    if(!e.target.value || valor == ""){
+      obtenerCuentas(usuario_id); 
+    }else{
+      buscarCuenta(e.target.value);
+    }
+  };
 
   // Estado para controlar el popup
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -123,6 +132,7 @@ export function Profile() {
                 size="lg"
                 placeholder="Agregue un dato de la cuenta"
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                onChange={buscador}
                 labelProps={{
                 className: "before:content-none after:content-none",
               }}
