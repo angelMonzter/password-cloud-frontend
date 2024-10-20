@@ -151,29 +151,24 @@ export function Profile() {
                 </Button>
               </div>
 
-              {/* Tarjeta de cuenta */}
+              {/* Tarjeta de cuenta 
               <div className="bg-white shadow-lg w-full mt-3 border rounded-lg overflow-hidden mb-3">
-                {/* Encabezado gris */}
                 <div className="bg-gray-200 p-4 flex justify-between items-center">
-                  {/* Nombre de la cuenta alineado a la izquierda */}
                   <Typography variant="h6" color="blue-gray" className="font-medium">
                     Nombre de la cuenta: <span className="font-normal">perro 233</span>
                   </Typography>
 
-                  {/* Botones de editar y eliminar alineados a la derecha */}
                   <div className="flex gap-2">
                     <button className="p-2  text-green-700 border rounded hover:bg-green-100">
-                      {/* Icono de editar */}
                       <i className="fas fa-edit"></i>
                     </button>
                     <button className="p-2  text-red-500 border rounded hover:bg-red-100">
-                      {/* Icono de eliminar */}
                       <i className="fas fa-trash"></i>
                     </button>
                   </div>
                 </div>
 
-                {/* Cuerpo con datos y acciones */}
+                 Cuerpo con datos y acciones
                 <div className="p-4 flex justify-between">
                   <div className="flex flex-col gap-2">
                     <Typography variant="small" color="blue-gray" className="font-medium mt-2">
@@ -187,19 +182,16 @@ export function Profile() {
                     </Typography>
                   </div>
 
-                  {/* Iconos de acciones */}
                   <div className="flex flex-col gap-2 items-end">
                     <button className="p-1 text-blue-500 border rounded hover:bg-blue-100">
-                      {/* Icono de copiar */}
                       <i className="fas fa-copy"></i>
                     </button>
                     <button className="p-1 text-blue-500 border rounded hover:bg-blue-100">
-                      {/* Icono de ocultar/ver */}
                       <i className="fas fa-copy"></i>
                     </button>
                   </div>
-                </div>
-              </div>
+                </div> 
+              </div>*/}
 
               <CardAcount />
             </div>
