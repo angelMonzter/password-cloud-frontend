@@ -39,6 +39,7 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
           setId(cuenta.datos_cuenta_id)
           desencriptarPassword(cuenta.datos_cuenta_id);
       }
+      console.log(cuenta)
     }, [cuenta])
 
     const handleSubmit = async (e) => {

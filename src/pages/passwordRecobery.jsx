@@ -78,7 +78,7 @@ export function PasswordRecobery() {
           className="h-full w-full object-cover "
         />
       </div>
-      <div className="h-screen lg:w-3/5 flex flex-col items-center justify-center">
+      <div className="h-screen lg:w-3/5 flex flex-col mx-auto items-center justify-center">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">Recuperar contraseña</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Ingresa tu nueva contraseña.</Typography>

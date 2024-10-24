@@ -58,7 +58,7 @@ export function SignUp() {
   }
 
   return (
-    <section className="p-0 flex min-h-screen">
+    <section className="m-0 p-0 flex min-h-screen">
       <ToastContainer />
       <div className="w-full w-2/5 h-screen hidden lg:block">
         <img
@@ -66,7 +66,7 @@ export function SignUp() {
           className="h-full w-full object-cover "
         />
       </div>
-      <div className="h-screen lg:w-3/5 flex flex-col items-center justify-center">
+      <div className="h-screen lg:w-3/5 mx-auto flex flex-col items-center justify-center">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">Registrate</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Ingresa tus datos para registrarte.</Typography>

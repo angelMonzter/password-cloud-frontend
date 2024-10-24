@@ -6,6 +6,7 @@ const AcountContext = createContext();
 export const AcountProvider = ({ children }) => {
 
     const [ cuentas, setCuentas ] = useState([]);
+    const [ total_cuentas, setTotalcuentas ] = useState([]);
 
     const obtenerCuentas = async (id) => {
 
@@ -23,6 +24,30 @@ export const AcountProvider = ({ children }) => {
             const url = `/api/acount/${id}`;
             const { data } = await axiosInstance(url, config)
             setCuentas(data);
+            obtenerCuentasTotal(id);
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const obtenerCuentasTotal = async (id) => {
+
+        try {
+            const token = localStorage.getItem('token')
+            if(!token) return
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const url = `/api/acount-total/${id}`;
+            const { data } = await axiosInstance(url, config)
+            console.log(data)
+            setTotalcuentas(data);
             
         } catch (error) {
             console.log(error)
@@ -63,6 +88,7 @@ export const AcountProvider = ({ children }) => {
     
                 const { data } = await axiosInstance.post('/api/acount', { nombre_cuenta, usuario, password, datos_extra, usuario_id }, config);
                 obtenerCuentas(usuario_id);
+                obtenerCuentasTotal(usuario_id);
                 console.log(data);
             } catch (error) {
                 // El servidor respondió con un código de estado diferente a 2xx
@@ -88,6 +114,7 @@ export const AcountProvider = ({ children }) => {
             const url = `/api/acount/${id}`;
             const { data } = await axiosInstance.delete(url, config);
             obtenerCuentas(usuario_sid);
+            obtenerCuentasTotal(usuario_sid);
             console.log(data);
         } catch (error) {
             // El servidor respondió con un código de estado diferente a 2xx
@@ -120,7 +147,7 @@ export const AcountProvider = ({ children }) => {
         }
     }
 
-    const buscarCuenta = async ( texto ) => {
+    const buscarCuenta = async ( texto, usuario_id ) => {
         try {
             const token = localStorage.getItem('token')
             if(!token) return
@@ -131,8 +158,9 @@ export const AcountProvider = ({ children }) => {
                     Authorization: `Bearer ${token}`
                 }
             }
+            console.log(usuario_id);
 
-            const { data } = await axiosInstance.post('/api/search-acount', { texto }, config);
+            const { data } = await axiosInstance.post('/api/search-acount', { texto, usuario_id }, config);
             console.log(data);
             setCuentas(data);
 
@@ -146,11 +174,13 @@ export const AcountProvider = ({ children }) => {
         <AcountContext.Provider
             value={{
                 cuentas,
+                total_cuentas,
                 obtenerCuentas,
                 registrarCuenta,
                 eliminarCuenta,
                 obtenerPasssword,
-                buscarCuenta
+                buscarCuenta,
+                obtenerCuentasTotal
             }}
         >
             {children}

@@ -27,9 +27,9 @@ export function Home() {
               <Typography
                 variant="h1"
                 color="white"
-                className="mb-6 font-black"
+                className="mb-6 font-black text-2xl sm:text-3xl lg:text-5xl"
               >
-                El limite lo pones tu!
+                El límite lo pones tú!
               </Typography>
               <Typography variant="lead" color="white" className="opacity-80">
               Descubre el potencial ilimitado de tu negocio con nuestro software. Optimiza tus procesos, ahorra tiempo y lleva tu productividad al siguiente nivel. ¡El límite lo pones tú!
@@ -128,9 +128,9 @@ export function Home() {
             Contactanos, hagamos realidad esos proyectos.
           </PageTitle>
           <form className="mx-auto w-full mt-12 lg:w-5/12">
-            <div className="mb-8 flex gap-8">
-              <Input variant="outlined" size="lg" label="Nombre completo" />
-              <Input variant="outlined" size="lg" label="Correo" />
+            <div className="mb-8 flex flex-col gap-8 sm:flex-row">
+              <Input className="w-full" variant="outlined" size="lg" label="Nombre completo" />
+              <Input className="w-full" variant="outlined" size="lg" label="Correo" />
             </div>
             <Textarea variant="outlined" size="lg" label="Mensaje" rows={8} />
             <Checkbox

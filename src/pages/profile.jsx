@@ -17,11 +17,12 @@ import {  showAlert } from "../components/Alerta"
 export function Profile() {
 
   const { cerrarSesion, auth } = useAuth();
-  const { cuentas, obtenerCuentas, buscarCuenta } = useAcount();
+  const { cuentas, obtenerCuentas, buscarCuenta, obtenerCuentasTotal, total_cuentas } = useAcount();
   const { nombre, correo, usuario_id } = auth.perfil;
 
   useEffect(() => {
     obtenerCuentas(usuario_id); 
+    obtenerCuentasTotal(usuario_id);
   }, [])
 
   const buscador = async (e) => {
@@ -30,7 +31,7 @@ export function Profile() {
     if(!e.target.value || valor == ""){
       obtenerCuentas(usuario_id); 
     }else{
-      buscarCuenta(e.target.value);
+      buscarCuenta(e.target.value, usuario_id);
     }
   };
 
@@ -54,10 +55,10 @@ export function Profile() {
             <div className="relative flex gap-6 items-start">
               <div className="-mt-20 w-40">
                 <Avatar
-                  src="/img/team-5.png"
+                  src="/img/perfil.png"
                   alt="Profile picture"
                   variant="circular"
-                  className="h-full w-full"
+                  className="h-full w-full bg-white"
                 />
               </div>
               <div className="flex flex-col mt-2">
@@ -70,24 +71,15 @@ export function Profile() {
 
             <div className="mt-10 mb-10 flex lg:flex-col justify-between items-center lg:justify-end lg:mb-0 lg:px-4 flex-wrap lg:-mt-5">
               <Button className="bg-gray-900 w-fit lg:ml-auto" onClick={cerrarSesion}>Cerrar Sesion</Button>
+              {/* 
+                
+              */}
               <div className="flex justify-start py-4 pt-8 lg:pt-4">
                 <div className="mr-4 p-3 text-center">
-                  <Typography
-                    variant="lead"
-                    color="blue-gray"
-                    className="font-bold uppercase"
-                  >
-                    22
-                  </Typography>
-                  <Typography
-                    variant="small"
-                    className="font-normal text-blue-gray-500"
-                  >
-                    Friends
-                  </Typography>
+                 
                 </div>
                 <div className="mr-4 p-3 text-center">
-                  <Typography
+                  {/* <Typography
                     variant="lead"
                     color="blue-gray"
                     className="font-bold uppercase"
@@ -99,7 +91,7 @@ export function Profile() {
                     className="font-normal text-blue-gray-500"
                   >
                     Photos
-                  </Typography>
+                  </Typography>*/}
                 </div>
                 <div className="p-3 text-center lg:mr-4">
                   <Typography
@@ -107,13 +99,13 @@ export function Profile() {
                     color="blue-gray"
                     className="font-bold uppercase"
                   >
-                    89
+                     {total_cuentas.length > 0 ? total_cuentas[0].total_cuentas : 'Cargando...'}
                   </Typography>
                   <Typography
                     variant="small"
                     className="font-normal text-blue-gray-500"
                   >
-                    Comments
+                    Cuentas
                   </Typography>
                 </div>
               </div>

@@ -36,7 +36,7 @@ export function Password() {
     return (
         <section className="m-0 flex gap-4 min-h-screen">
             <ToastContainer />
-            <div className="h-screen lg:w-3/5 mt-0 flex flex-col items-center justify-center">
+            <div className="h-screen lg:w-3/5 mt-0 mx-auto flex flex-col items-center justify-center">
             <div className="text-center">
                 <Typography variant="h2" className="font-bold mb-4">Ingresa tu email</Typography>
                 <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Recupera tu acceso.</Typography>
