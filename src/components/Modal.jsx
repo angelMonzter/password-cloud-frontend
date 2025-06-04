@@ -4,12 +4,16 @@ import { DialogHeader, DialogBody, DialogFooter, Input, Typography, Button, step
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import axiosInstance from '../config/axios';
 import useAcount from "../hooks/useAcount";
+import useCategories from "../hooks/useCategories";
 import useAuth from "../hooks/useAuth";
 import {  showAlert } from "../components/Alerta"
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated';
 
 function AddAccountModal({ isOpen, closeModal, cuenta }) {
 
     const { registrarCuenta, obtenerPasssword } = useAcount();
+    const { categories } = useCategories();
     const { auth } = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +23,20 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
     const [password, setPassword] = useState('') 
     const [datos_extra, setDatosExtra] = useState('')
     const [cuenta_id, setId] = useState('')
+
+    const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
+
+    const animatedComponents = makeAnimated();
+
+    const opciones = categories.map(categoria => ({
+      value: categoria.categoria_id,
+      label: categoria.nombre_categoria
+    }));
+
+    const handleCategoriasChange = (selectedOptions) => {
+      setCategoriasSeleccionadas(selectedOptions || []);
+    };
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -38,6 +56,13 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
           setDatosExtra(cuenta.datos_extra)
           setId(cuenta.datos_cuenta_id)
           desencriptarPassword(cuenta.datos_cuenta_id);
+
+          // 🔽 Convertir categorías a formato para Select
+          const categoriasFormateadas = cuenta.categorias.map(cat => ({
+            value: cat.categoria_id,
+            label: cat.nombre_categoria
+          }));
+          setCategoriasSeleccionadas(categoriasFormateadas);
       }
       console.log(cuenta)
     }, [cuenta])
@@ -53,7 +78,11 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
 
       const { usuario_id } = auth.perfil;
 
-      registrarCuenta( nombre_cuenta, usuario, password, datos_extra, usuario_id, cuenta_id );
+      const valoresCategorias = categoriasSeleccionadas.map(cat => cat.value);
+      console.log("Valores de categorías:", valoresCategorias);
+
+      registrarCuenta( nombre_cuenta, usuario, password, datos_extra, usuario_id, cuenta_id, valoresCategorias );
+
       showAlert('success', 'Cuenta agregada');
       setNombreCuenta('');
       setUsuario('');
@@ -138,12 +167,28 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
                                   </Button>
                               </div>
                               { !campoObligatorio ? <p className="text-xs text-red-700 p-2">Campo obligatorio</p> : <br/>}
-
+                              
                               <Input 
                                   label="Datos extra"
                                   size="lg" 
                                   value={datos_extra}
                                   onChange={e => setDatosExtra(e.target.value)} 
+                              />
+                              
+                              <Select
+                                closeMenuOnSelect={true}
+                                components={animatedComponents}
+                                isMulti
+                                options={opciones} // Lista total de opciones posibles
+                                value={categoriasSeleccionadas} // ✅ Selección actual
+                                onChange={(selected) => setCategoriasSeleccionadas(selected)} // 🔄 Actualiza el estado
+                                menuPortalTarget={document.body} // Mueve el menú fuera del modal
+                                menuPosition="absolute" // Asegura que se posicione de manera absoluta
+                                placeholder="Categorías" // Aquí cambias el texto del placeholder
+                                styles={{
+                                  menuPortal: (base) => ({ ...base, zIndex: 9999 }) // Ajusta el z-index para que quede sobre el modal
+                                }}
+                                className="mt-6"
                               />
                           </div>
 

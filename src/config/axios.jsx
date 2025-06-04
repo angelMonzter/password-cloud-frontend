@@ -3,9 +3,9 @@ import axios from 'axios';
 // Configuración básica de Axios
 const axiosInstance = axios.create({
     //Servidor
-    baseURL: 'https://app.softwareincorp.com.mx:4000', 
+    //baseURL: 'https://app.softwareincorp.com.mx:4000', 
     //localhost
-    //baseURL: import.meta.env.VITE_API_URL, 
+    baseURL: import.meta.env.VITE_API_URL, 
     headers: {
         'Content-Type': 'application/json',
     },

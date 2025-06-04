@@ -36,18 +36,19 @@ export function SignIn() {
           setAuth(data)
           navigate('/profile');
       } catch (error) {
-          // El servidor respondió con un código de estado diferente a 2xx
-          const errorMessage = error.response.data.message;  // Capturar el mensaje enviado por tu API
-          showAlert('error', errorMessage);
+        // El servidor respondió con un código de estado diferente a 2xx
+        const errorMessage = error.response.data.message;  // Capturar el mensaje enviado por tu API
+        showAlert('error', errorMessage);
       }
   }
 
   return (
-    <section className="m-0 flex gap-4 min-h-screen">
+    <section className="m-0 lg:flex md:block md:gap-2 lg:gap-1 min-h-screen">
       <ToastContainer />
-      <div className="h-screen lg:w-3/5 mt-0 flex flex-col items-center justify-center">
+      <div className="h-screen lg:w-2/5 md:w-full mt-0 flex flex-col items-center justify-center">
+        <Typography variant="h2" className="font-bold mb-6">Password Cloud</Typography>
         <div className="text-center">
-          <Typography variant="h2" className="font-bold mb-4">Iniciar Sesión</Typography>
+          <Typography variant="h4" className="font-bold mb-0">Iniciar Sesión</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Ingresa tu email y contraseña para iniciar sesion.</Typography>
         </div>
         <form onSubmit={handleSubmit} className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">
@@ -98,7 +99,7 @@ export function SignIn() {
         </form>
 
       </div>
-      <div className="w-full w-2/5 h-screen hidden lg:block">
+      <div className="md:w-full lg:w-3/5 h-screen hidden lg:block">
         <img
           src="/img/gala1.jpg"
           className="h-full w-full object-cover "

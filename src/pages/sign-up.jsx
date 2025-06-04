@@ -60,15 +60,16 @@ export function SignUp() {
   return (
     <section className="m-0 p-0 flex min-h-screen">
       <ToastContainer />
-      <div className="w-full w-2/5 h-screen hidden lg:block">
+      <div className="w-full h-screen hidden lg:block">
         <img
           src="/img/gala2.jpg"
           className="h-full w-full object-cover "
         />
       </div>
       <div className="h-screen lg:w-3/5 mx-auto flex flex-col items-center justify-center">
+        <Typography variant="h2" className="font-bold mb-6">Password Cloud</Typography>
         <div className="text-center">
-          <Typography variant="h2" className="font-bold mb-4">Registrate</Typography>
+          <Typography variant="h4" className="font-bold mb-0">Registrate</Typography>
           <Typography variant="paragraph" color="blue-gray" className="text-lg font-normal">Ingresa tus datos para registrarte.</Typography>
         </div>
         <form onSubmit={handleSubmit} className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2">

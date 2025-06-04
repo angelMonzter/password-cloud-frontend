@@ -1,82 +1,68 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Typography, Button } from "@material-tailwind/react";
 import useAcount from "../hooks/useAcount";
 import 'react-toastify/dist/ReactToastify.css';
-import { showAlert } from "./Alerta"
-import AddAccountModal from "./Modal"; // Importa el modal que creamos
+import { showAlert } from "./Alerta";
+import AddAccountModal from "./Modal";
 
 export const CardAcount = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);  // Estado del modal
-  const [cuentaSeleccionada, setCuentaSeleccionada] = useState(null);  // Datos de la cuenta seleccionada
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cuentaSeleccionada, setCuentaSeleccionada] = useState(null);
   const { cuentas, eliminarCuenta, obtenerPasssword } = useAcount();
 
-  // Función para copiar texto al portapapeles
-  const copiarAlPortapapeles = async (data) => {
-    //mandar a backend a desencriptar contraseña 
-    const textoDesencriptado = await obtenerPasssword(data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
+  // Calcular las cuentas para la página actual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCuentas = cuentas.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(cuentas.length / itemsPerPage);
+
+  const copiarAlPortapapeles = async (data) => {
+    const textoDesencriptado = await obtenerPasssword(data);
     if (textoDesencriptado) {
-      // Aquí puedes usar el texto desencriptado como necesites
       navigator.clipboard.writeText(textoDesencriptado).then(() => {
         showAlert('success', 'Datos copiados');
-      }).catch((err) => {
-        console.error("Error al copiar el texto:", err);
-      });
+      }).catch((err) => console.error("Error al copiar:", err));
       return;
     }
 
     navigator.clipboard.writeText(data).then(() => {
       showAlert('success', 'Datos copiados');
-    }).catch((err) => {
-      console.error("Error al copiar el texto:", err);
+    }).catch((err) => console.error("Error al copiar:", err));
+  };
+
+  const borrarCuenta = (cuenta_id, usuario_sid) => {
+    showAlert("confirm", `¿Eliminar Cuenta?`, async () => {
+      eliminarCuenta(cuenta_id, usuario_sid);
     });
   };
 
-  //Funcion para borrar una cuenta
-  const borrarCuenta = (cuenta_id, usuario_sid) => {
-    
-    eliminarCuenta(cuenta_id, usuario_sid);
-    showAlert('success', 'Cuenta eliminada');
-  };
-
-  //Funcion para editar una cuenta
   const editarCuenta = (cuenta) => {
-    setCuentaSeleccionada(cuenta)
+    setCuentaSeleccionada(cuenta);
     setIsModalOpen(true);
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   return (
     <>
-      {cuentas.length > 0 ? (
-        cuentas.map((cuenta) => (
+      {currentCuentas.length > 0 ? (
+        currentCuentas.map((cuenta) => (
           <div key={cuenta.datos_cuenta_id} className="bg-white shadow-lg w-full mt-3 border rounded-lg overflow-hidden mb-3">
-            {/* Encabezado gris */}
             <div className="bg-gray-200 p-4 flex justify-between items-center">
               <Typography variant="h6" color="blue-gray" className="font-medium">
                 <span className="font-normal">{cuenta.nombre_cuenta}</span>
               </Typography>
-
-              {/* Botones de editar y eliminar alineados a la derecha */}
               <div className="flex gap-2">
-                <button 
-                  onClick={() => editarCuenta(cuenta)} 
-                  className="p-2 text-green-700 border rounded hover:bg-green-100"
-                >
+                <button onClick={() => editarCuenta(cuenta)} className="p-2 text-green-700 border rounded hover:bg-green-100">
                   <i className="fas fa-edit"></i>
                 </button>
-                <button 
-                  onClick={() => borrarCuenta(cuenta.datos_cuenta_id, cuenta.usuario_sid)} 
-                  className="p-2 text-red-500 border rounded hover:bg-red-100"
-                >
+                <button onClick={() => borrarCuenta(cuenta.datos_cuenta_id, cuenta.usuario_sid)} className="p-2 text-red-500 border rounded hover:bg-red-100">
                   <i className="fas fa-trash"></i>
                 </button>
               </div>
             </div>
-            
-            {/* Cuerpo con datos y acciones */}
             <div className="p-4 flex justify-between">
               <div className="flex flex-col gap-2">
                 <Typography variant="small" color="blue-gray" className="font-medium mt-2">
@@ -88,20 +74,32 @@ export const CardAcount = () => {
                 <Typography variant="small" color="blue-gray" className="font-medium mt-2">
                   Datos extra: <span className="font-normal">{cuenta.datos_extra}</span>
                 </Typography>
+                
+                {/* 🔽 CATEGORÍAS */}
+                {cuenta.categorias && cuenta.categorias.length > 0 && (
+                  <div className="pb-4">
+                    <div className="flex items-center flex-wrap gap-2 mt-2">
+                      <Typography variant="small" color="blue-gray" className="font-medium">
+                        Categorías:
+                      </Typography>
+                      {cuenta.categorias.map((categoria) => (
+                        <span
+                          key={categoria.categoria_id}
+                          className="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full"
+                        >
+                          {categoria.nombre_categoria}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
               </div>
-
-              {/* Iconos de acciones */}
               <div className="flex flex-col gap-2 items-end">
-                <button
-                  className="p-2 text-blue-500 border rounded hover:bg-blue-100"
-                  onClick={() => copiarAlPortapapeles(cuenta.usuario)}
-                >
-                  <i className="fas fa-copy"></i> {/* Icono de copiar */}
+                <button className="p-2 text-blue-500 border rounded hover:bg-blue-100" onClick={() => copiarAlPortapapeles(cuenta.usuario)}>
+                  <i className="fas fa-copy"></i>
                 </button>
-                <button 
-                    className="p-1 text-blue-500 border rounded hover:bg-blue-100"
-                    onClick={() => copiarAlPortapapeles(cuenta.datos_cuenta_id)}
-                >
+                <button className="p-2 text-blue-500 border rounded hover:bg-blue-100" onClick={() => copiarAlPortapapeles(cuenta.datos_cuenta_id)}>
                   <i className="fas fa-copy"></i>
                 </button>
               </div>
@@ -114,7 +112,33 @@ export const CardAcount = () => {
         </Typography>
       )}
 
-      <AddAccountModal isOpen={isModalOpen} closeModal={closeModal} cuenta={cuentaSeleccionada} />
+      {/* Controles de paginación */}
+      {cuentas.length > itemsPerPage && (
+        <div className="w-full flex justify-between items-center mt-4 px-4">
+          <Button 
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+            disabled={currentPage === 1} 
+            className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          >
+            Anterior
+          </Button>
+
+          <Typography variant="h6" color="blue-gray">
+            Página {currentPage} de {totalPages}
+          </Typography>
+
+          <Button 
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+            disabled={currentPage === totalPages} 
+            className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-300"
+          >
+            Siguiente
+          </Button>
+        </div>
+      )}
+
+
+      <AddAccountModal isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} cuenta={cuentaSeleccionada} />
     </>
   );
 }

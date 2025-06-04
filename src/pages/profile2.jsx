@@ -4,17 +4,12 @@ import {
   MapPinIcon,
   BriefcaseIcon,
   BuildingLibraryIcon,
-  PlusCircleIcon, 
-  XMarkIcon
 } from "@heroicons/react/24/solid";
 import { Footer } from "@/widgets/layout";
 import useAuth from "../hooks/useAuth";
 import useAcount from "../hooks/useAcount";
-import useCategories from "../hooks/useCategories";
 import AddAccountModal from "../components/Modal"; // Importa el modal que creamos
-import AddCategoryModal from "../components/ModalCategories"; // Importa el modal que creamos
 import CardAcount from "../components/CardAcount";
-import Categories from "../components/Categories";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {  showAlert } from "../components/Alerta"
@@ -24,13 +19,10 @@ export function Profile() {
   const { cerrarSesion, auth } = useAuth();
   const { cuentas, obtenerCuentas, buscarCuenta, obtenerCuentasTotal, total_cuentas } = useAcount();
   const { nombre, correo, usuario_id } = auth.perfil;
-  const { categories, total_categorias, getCategories } = useCategories();
 
   useEffect(() => {
-    getCategories(usuario_id); 
     obtenerCuentas(usuario_id); 
     obtenerCuentasTotal(usuario_id);
-    console.log(categories)
   }, [])
 
   const buscador = async (e) => {
@@ -45,12 +37,9 @@ export function Profile() {
 
   // Estado para controlar el popup
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpenCategory, setIsModalOpenCategory] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
-  const openModalCategory = () => setIsModalOpenCategory(true);
   const closeModal = () => setIsModalOpen(false);
-  const closeModalCategory = () => setIsModalOpenCategory(false);
 
   return (
   <>
@@ -102,7 +91,7 @@ export function Profile() {
                  
                 </div>
                 <div className="mr-4 p-3 text-center">
-                  {/**/} <Typography
+                  {/* <Typography
                     variant="lead"
                     color="blue-gray"
                     className="font-bold uppercase"
@@ -113,8 +102,8 @@ export function Profile() {
                     variant="small"
                     className="font-normal text-blue-gray-500"
                   >
-                    Categorias
-                  </Typography>
+                    Photos
+                  </Typography>*/}
                 </div>
                 <div className="p-3 text-center lg:mr-4">
                   <Typography
@@ -137,58 +126,78 @@ export function Profile() {
 
           {/* Modal para agregar cuenta */}
           <AddAccountModal isOpen={isModalOpen} closeModal={closeModal} cuenta={''} />
-          {/* Modal para agregar categorias */}
-          <AddCategoryModal isOpen={isModalOpenCategory} closeModal={closeModalCategory} categoria={''} />
 
           <div className="mb-10 py-6">
-            <div className="flex w-full flex-col lg:flex-row gap-6">
-              {/* Sección del almacén de cuentas (3/4 de la pantalla en pantallas grandes) */}
-              <div className="lg:w-3/4 w-full">
-                <h3 className="text-md lg:text-xl">Almacén de Cuentas</h3>
-                <CardAcount />
+            <div className="flex w-full flex-col items-start">
+              <Typography variant="small" color="blue-gray" className="-mb-0 font-medium">
+                Buscar cuenta
+              </Typography>
+              <Input
+                size="lg"
+                placeholder="Agregue un dato de la cuenta"
+                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                onChange={buscador}
+                labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+              />
+            </div>
+
+            <div className="flex w-full flex-col items-start">
+              {/* Contenedor flex para el título y el botón en la misma línea */}
+              <div className="flex w-full justify-between items-center mt-7">
+                <h3 className="text-md lg:text-xl">Almacen de Cuentas</h3>
+                <Button
+                  className="bg-blue-600 text-white w-fit lg:ml-auto"
+                  onClick={openModal}
+                >
+                  Agregar cuenta
+                </Button>
               </div>
 
-              {/* Sección de búsqueda y botón (1/4 de la pantalla en pantallas grandes) */}
-              <div className="lg:w-1/4 w-full">
-                <div className="flex w-full flex-col items-start">
-                  <Typography variant="small" color="blue-gray" className="-mb-0 font-medium">
-                    Buscar cuenta
+              {/* Tarjeta de cuenta 
+              <div className="bg-white shadow-lg w-full mt-3 border rounded-lg overflow-hidden mb-3">
+                <div className="bg-gray-200 p-4 flex justify-between items-center">
+                  <Typography variant="h6" color="blue-gray" className="font-medium">
+                    Nombre de la cuenta: <span className="font-normal">perro 233</span>
                   </Typography>
-                  <Input
-                    size="lg"
-                    placeholder="Agregue un dato de la cuenta"
-                    className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                    onChange={buscador}
-                    labelProps={{
-                      className: "before:content-none after:content-none",
-                    }}
-                  />
-                  <div className="flex w-full justify-between items-center mt-5 mb-1">
-                    <Typography variant="small" color="blue-gray" className="-mb-0 font-medium mt-0">
-                      Categorias
-                    </Typography>
-                    <Button
-                      className="bg-green-600 text-white text-xs p-1"
-                      onClick={openModalCategory}
-                    >
-                      <PlusCircleIcon class="h-5 w-5 text-white" />
-                    </Button>
+
+                  <div className="flex gap-2">
+                    <button className="p-2  text-green-700 border rounded hover:bg-green-100">
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button className="p-2  text-red-500 border rounded hover:bg-red-100">
+                      <i className="fas fa-trash"></i>
+                    </button>
                   </div>
-                  
-                  <Categories />
-
                 </div>
 
-                {/* Botón Agregar cuenta con posición fija */}
-                <div className="sticky top-4 mt-6">
-                  <Button
-                    className="bg-blue-600 text-white w-full"
-                    onClick={openModal}
-                  >
-                    Agregar cuenta
-                  </Button>
-                </div>
-              </div>
+                 Cuerpo con datos y acciones
+                <div className="p-4 flex justify-between">
+                  <div className="flex flex-col gap-2">
+                    <Typography variant="small" color="blue-gray" className="font-medium mt-2">
+                      Usuario / Correo: <span className="font-normal">perro@pero.com</span>
+                    </Typography>
+                    <Typography variant="small" color="blue-gray" className="font-medium mt-2">
+                      Contraseña: <span className="font-normal">*********</span>
+                    </Typography>
+                    <Typography variant="small" color="blue-gray" className="font-medium mt-4">
+                      Datos extra: <span className="font-normal">aa perrooo2</span>
+                    </Typography>
+                  </div>
+
+                  <div className="flex flex-col gap-2 items-end">
+                    <button className="p-1 text-blue-500 border rounded hover:bg-blue-100">
+                      <i className="fas fa-copy"></i>
+                    </button>
+                    <button className="p-1 text-blue-500 border rounded hover:bg-blue-100">
+                      <i className="fas fa-copy"></i>
+                    </button>
+                  </div>
+                </div> 
+              </div>*/}
+
+              <CardAcount />
             </div>
           </div>
         </div>
@@ -202,4 +211,4 @@ export function Profile() {
   );
 }
 
-export default Profile;
+export default Profile2;
