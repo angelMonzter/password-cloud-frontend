@@ -9,6 +9,7 @@ import { showAlert } from '../components/Alerta';  // Importar la función
 import axiosInstance from '../config/axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import gala2 from "../assets/gala2.jpg";
 
 export function PasswordRecobery() {
   const [password, setPassword] = useState('');
@@ -72,9 +73,9 @@ export function PasswordRecobery() {
   return (
     <section className="p-0 flex min-h-screen">
       <ToastContainer />
-      <div className="w-full w-2/5 h-screen hidden lg:block">
+      <div className="w-full h-screen hidden lg:block">
         <img
-          src="/img/gala2.jpg"
+          src={gala2}
           className="h-full w-full object-cover "
         />
       </div>
