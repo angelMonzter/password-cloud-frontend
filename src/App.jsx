@@ -4,6 +4,7 @@ import SignIn from "./pages/Sign-in";
 import SignUp from "./pages/Sing-up";
 import Password from "./pages/Password";
 import Profile from "./pages/Profile";
+import PasswordRecobery from "./pages/passwordRecobery";
 import PrivateRoute from "./config/PrivateRoute"
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/password" element={<Password />} />
+          <Route path="/password-recobery" element={<PasswordRecobery />} />
 
           {/* Área protegida que usa layout */}
           <Route
