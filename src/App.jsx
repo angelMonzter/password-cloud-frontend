@@ -5,6 +5,7 @@ import SignUp from "./pages/Sing-up";
 import Password from "./pages/Password";
 import Profile from "./pages/Profile";
 import PasswordRecobery from "./pages/passwordRecobery";
+import ConfirmarCuenta from "./pages/Acount";
 import PrivateRoute from "./config/PrivateRoute"
 
 export default function App() {
@@ -17,7 +18,8 @@ export default function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/password" element={<Password />} />
-          <Route path="/password-recobery" element={<PasswordRecobery />} />
+          <Route path="/password-recobery/:token" element={<PasswordRecobery />} />
+          <Route path="/acount/:token" element={<ConfirmarCuenta />} />
 
           {/* Área protegida que usa layout */}
           <Route
