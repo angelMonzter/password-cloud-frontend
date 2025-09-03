@@ -134,7 +134,7 @@ export function Profile() {
                     color="blue-gray"
                     className="font-bold uppercase"
                   >
-                    {total_categorias}
+                    {total_categorias || 0}
                   </Typography>
                   <Typography
                     variant="small"
