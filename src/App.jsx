@@ -18,8 +18,8 @@ export default function App() {
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/password" element={<Password />} />
-          <Route path="/password-recobery/:token" element={<PasswordRecobery />} />
-          <Route path="/acount/:token" element={<ConfirmarCuenta />} />
+          <Route path="/password-recobery" element={<PasswordRecobery />} />
+          <Route path="/account" element={<ConfirmarCuenta />} />
 
           {/* Área protegida que usa layout */}
           <Route

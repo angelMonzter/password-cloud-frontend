@@ -19,18 +19,17 @@ export function Password() {
         e.preventDefault()
 
         if(correo === '') {
-            showAlert('error', 'El email es obligatorio');
+            showAlert('error', 'El email es obligatorio1');
             return;
         }
-
-
+        
         try {
-            const { data } = await axiosInstance.post('/api/password', { correo })
+            const { data } = await axiosInstance.post('/api/forgot-password', { correo })
             showAlert('success', 'Por favor, verifica tu correo electrónico.');
             setCorreo('');
 
         } catch (error) {
-            showAlert('error', 'El email es obligatorio');
+            showAlert('error', 'El email es obligatorio2');
         }
     }
 

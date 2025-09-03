@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
     //Servidor
     baseURL: 'https://angelvelazquez.online:4000', 
     //localhost
-    //baseURL: import.meta.env.VITE_API_URL, 
+    //baseURL: "http://localhost:4000", 
     headers: {
         'Content-Type': 'application/json',
     },

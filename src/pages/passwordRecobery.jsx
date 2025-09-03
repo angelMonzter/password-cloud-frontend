@@ -16,11 +16,13 @@ export function PasswordRecobery() {
   const [passsword_confirmar, setConfirmarPassword] = useState('');
   const [tokenValido, setTokenValido] = useState(null); // Estado para verificar si el token es válido
   const [passwordActualizada, setPasswordActualizada] = useState(false); // Estado para verificar si la contraseña fue actualizada
-  const { token } = useParams(); // Captura el token desde la URL
+  
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
 
   // Verificación del token en el primer render
   useEffect(() => {
-    const comprobarToken = async () => {
+    const comprobarToken = async (token) => {
       try {
         const url = `/api/password/${token}`;
         const { data } = await axiosInstance(url);
@@ -38,7 +40,7 @@ export function PasswordRecobery() {
       }
     };
 
-    comprobarToken();
+    comprobarToken(token);
   }, [token]); // Ejecutar el efecto cada vez que el token cambie
 
   // Manejo del formulario de actualización de contraseña

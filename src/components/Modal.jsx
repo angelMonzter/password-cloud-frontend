@@ -81,7 +81,6 @@ function AddAccountModal({ isOpen, closeModal, cuenta }) {
       const { usuario_id } = auth.perfil;
 
       const valoresCategorias = categoriasSeleccionadas.map(cat => cat.value);
-      console.log("Valores de categorías:", valoresCategorias);
 
       registrarCuenta( nombre_cuenta, usuario, password, datos_extra, usuario_id, cuenta_id, valoresCategorias );
 

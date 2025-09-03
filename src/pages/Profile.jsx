@@ -36,10 +36,9 @@ export function Profile() {
     getCategories(usuario_id); 
     obtenerCuentas(usuario_id); 
     obtenerCuentasTotal(usuario_id);
-    console.log(categories)
-    console.log(usuario_id);
+    
   }, [])
-
+  
   const buscador = async (e) => {
     e.preventDefault();
     const valor = e.target.value.trim();
@@ -48,6 +47,14 @@ export function Profile() {
     }else{
       buscarCuenta(e.target.value, usuario_id);
     }
+  };
+
+  const editPerfil = async (e) => {
+    e.preventDefault();
+    console.log(token)
+    //const url = '/recobery-password?token=' + token;
+
+    //window.location.href = url;
   };
 
   // Estado para controlar el popup
@@ -100,12 +107,20 @@ export function Profile() {
 
 
             <div className="mt-10 mb-10 flex lg:flex-col justify-between items-center lg:justify-end lg:mb-0 lg:px-4 flex-wrap lg:-mt-5">
-              <Button 
-                className="bg-gray-900 w-fit lg:ml-auto" 
-                onClick={cerrarSesion}
-              >
-                Cerrar Sesion
-              </Button>
+              <div className="flex gap-4">
+                <Button 
+                  className="bg-blue-900 w-fit" 
+                  onClick={cerrarSesion}
+                >
+                  Cerrar Sesión
+                </Button>
+                {/*<Button 
+                  className="bg-red-900 w-fit" 
+                  onClick={editPerfil}
+                >
+                  Restablecer Contraseña
+                </Button> */}
+              </div>
               {/* 
                 
               */}
@@ -119,7 +134,7 @@ export function Profile() {
                     color="blue-gray"
                     className="font-bold uppercase"
                   >
-                    10
+                    {total_categorias}
                   </Typography>
                   <Typography
                     variant="small"

@@ -6,11 +6,11 @@ const ConfirmarCuenta = () => {
     const [cuentaConfirmada, setCuentaConfirmada] = useState(false);
     const [mensaje, setMensaje] = useState('');
 
-    const params = useParams();
-    const { token } = params;
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
 
     useEffect(() => {
-        const confirmarCuenta = async () => {
+        const confirmarCuenta = async (token) => {
             try {
                 const url = `/api/confirmar/${token}`;
                 const { data } = await axiosInstance(url);
@@ -29,7 +29,7 @@ const ConfirmarCuenta = () => {
             }
         };
 
-        confirmarCuenta();
+        confirmarCuenta(token);
     }, [token]);
 
     return (

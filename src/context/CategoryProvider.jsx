@@ -5,6 +5,7 @@ const CategoryContext = createContext();
 
 export const CategoryProvider = ({ children }) => {
     const [categories, setCategories] = useState([]);
+    const [total_categorias, setTotalCategories] = useState([]);
     const token = localStorage.getItem('token');
     
     // Obtener categorías del backend
@@ -21,7 +22,10 @@ export const CategoryProvider = ({ children }) => {
             
             const url = `/api/category/${id}`;
             const { data } = await axiosInstance(url, config);
+            const total = data.length;
+            setTotalCategories(total);
             setCategories(data);
+
 
     } catch (error) {
             console.error("Error al obtener categorías", error);
@@ -73,7 +77,8 @@ export const CategoryProvider = ({ children }) => {
                 getCategories,
                 categories, 
                 addCategory, 
-                deleteCategory 
+                deleteCategory,
+                total_categorias
             }}
         >
             {children}
